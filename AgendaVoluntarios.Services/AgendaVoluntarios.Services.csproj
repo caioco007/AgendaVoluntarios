@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AgendaVoluntarios.Data\AgendaVoluntarios.Data.csproj" />
+    <ProjectReference Include="..\AgendaVoluntarios.DTO\AgendaVoluntarios.DTO.csproj" />
+    <ProjectReference Include="..\AgendaVoluntarios.Repositories\AgendaVoluntarios.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
