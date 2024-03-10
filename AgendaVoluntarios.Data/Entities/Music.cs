@@ -8,8 +8,9 @@ namespace AgendaVoluntarios.Data.Entities
 {
     public class Music 
     {
-        public Music(string name, string key)
+        public Music(Guid id, string name, string key)
         {
+            Id = id;
             Name = name;
             Key = key;
 

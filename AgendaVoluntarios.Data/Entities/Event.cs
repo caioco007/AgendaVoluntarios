@@ -8,8 +8,9 @@ namespace AgendaVoluntarios.Data.Entities
 {
     public class Event 
     {
-        public Event(DateTime eventAt)
+        public Event(Guid id, DateTime eventAt)
         {
+            Id = id;
             EventAt = eventAt;
             CreatedAt = DateTime.Now;
 

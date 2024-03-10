@@ -8,11 +8,12 @@ namespace AgendaVoluntarios.Data.Entities
 {
     public class ProfileEvent 
     {
-        public ProfileEvent(Guid profileId, Guid eventId)
+        public ProfileEvent(Guid id, Guid profileId, Guid eventId, int activityId)
         {
+            Id = id;
             ProfileId = profileId;
             EventId = eventId;
-            IsConfirmedUser = false;
+            ActivityId = activityId;
         }
 
         public void ConfirmedUser()
@@ -23,6 +24,7 @@ namespace AgendaVoluntarios.Data.Entities
         public Guid Id { get; private set; }
         public Guid ProfileId { get; private set; }
         public Guid EventId { get; private set; }
-        public bool IsConfirmedUser { get; set; }
+        public int ActivityId { get; private set; }
+        public bool? IsConfirmedUser { get; set; }
     }
 }

@@ -8,8 +8,9 @@ namespace AgendaVoluntarios.Data.Entities
 {
     public class ProfileFunction 
     {
-        public ProfileFunction(Guid profileId, Guid functionId)
+        public ProfileFunction(Guid id, Guid profileId, Guid functionId)
         {
+            Id = id;
             ProfileId = profileId;
             FunctionId = functionId;
         }
