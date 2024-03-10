@@ -4,6 +4,7 @@ using AgendaVoluntarios.DTO.ViewModels;
 using AgendaVoluntarios.Repositories.Interfaces;
 using AgendaVoluntarios.Repositories.Repositories;
 using AgendaVoluntarios.Services.Interfaces;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AgendaVoluntarios.Services.Services
 {
@@ -41,6 +42,13 @@ namespace AgendaVoluntarios.Services.Services
         public async Task<List<FunctionViewModel>> GetAllAsync() {
 
             var functions = await _functionRepository.GetAllAsync();
+
+            return functions.Select(f => new FunctionViewModel(f.Id, f.TypeId, f.ActivityId)).ToList();
+        }
+
+        public async Task<List<FunctionViewModel>> GetFunctionByProfileIdAsync(Guid profileId)
+        {
+            var functions = await _functionRepository.GetFunctionByProfileIdAsync(profileId);
 
             return functions.Select(f => new FunctionViewModel(f.Id, f.TypeId, f.ActivityId)).ToList();
         }
