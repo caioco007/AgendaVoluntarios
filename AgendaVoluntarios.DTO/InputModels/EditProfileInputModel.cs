@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AgendaVoluntarios.DTO.InputModels
+﻿namespace AgendaVoluntarios.DTO.InputModels
 {
     public class EditProfileInputModel
     {
@@ -14,5 +7,6 @@ namespace AgendaVoluntarios.DTO.InputModels
         public string UserId { get; set; }
         public DateTime BirthDate { get; set; }
         public string PhoneNumber { get; set; }
+        public List<Guid> Functions { get; set; }
     }
 }

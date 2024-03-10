@@ -22,6 +22,7 @@ namespace AgendaVoluntarios.DTO.ViewModels
         public string FullName { get; private set; }
         [DisplayName("Data de Nascimento")]
         public DateTime BirthDate { get; private set; }
+        public string BirthDateFormatted => BirthDate.ToShortDateString();
         [DisplayName("Celular")]
         public string PhoneNumber { get; private set; }
         public string UserId { get; private set; }

@@ -10,7 +10,8 @@ namespace AgendaVoluntarios.DTO.InputModels
     public class NewEventInputModel
     {
         public DateTime EventAt { get; set; }
-        public List<ProfileViewModel> Profiles { get; set; }
-        public List<MusicViewModel> Musics { get; set; }
+        public List<NewProfileVocalsEventInputModel> ProfileVocalsEvents { get; set; }
+        public List<NewProfileEventInputModel> ProfileEvents { get; set; }
+        public List<Guid> Musics { get; set; }
     }
 }

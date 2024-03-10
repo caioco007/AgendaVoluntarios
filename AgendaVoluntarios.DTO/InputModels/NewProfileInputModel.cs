@@ -15,9 +15,10 @@ namespace AgendaVoluntarios.DTO.InputModels
         [DisplayName("Data de Nascimento")]
         public DateTime BirthDate { get; set; }
         [DisplayName("Celular")]
-        [RegularExpression(@"^[0-9]*$", ErrorMessage = "O campo Celular deve conter apenas números.")]
-        [StringLength(11, MinimumLength = 11, ErrorMessage = "O campo Celular deve ter 11 dígitos.")]
+        //[RegularExpression(@"^[0-9]*$", ErrorMessage = "O campo Celular deve conter apenas números.")]
+        //[StringLength(11, MinimumLength = 11, ErrorMessage = "O campo Celular deve ter 11 dígitos.")]
         public string PhoneNumber { get; set; }
         public string? UserId { get; set; }
+        public List<Guid> Functions { get; set; }
     }
 }
