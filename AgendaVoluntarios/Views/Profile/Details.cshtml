@@ -1,36 +1,63 @@
-﻿@model AgendaVoluntarios.DTO.ViewModels.ProfileViewModel
+﻿@using AgendaVoluntarios.Services.Interfaces;
+@model AgendaVoluntarios.DTO.ViewModels.ProfileViewModel
+@inject IFunctionService _functionService
 
 @{
     ViewData["Title"] = "Details";
+
+    var functions = await _functionService.GetFunctionByProfileIdAsync(Model.Id);
 }
 
-<h1>Details</h1>
+<h1>Detalhes</h1>
 
 <div>
-    <h4>Profile</h4>
+    <h4>Perfil</h4>
     <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FullName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FullName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.BirthDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.BirthDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.PhoneNumber)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.PhoneNumber)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <dl class="row">
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.FullName)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.BirthDate)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.BirthDateFormatted)
+                        </dd>
+                        <dt class="col-sm-2">
+                            @Html.DisplayNameFor(model => model.PhoneNumber)
+                        </dt>
+                        <dd class="col-sm-10">
+                            @Html.DisplayFor(model => model.PhoneNumber)
+                        </dd>
+                        <dt class="col-sm-2">
+                            Funções
+                        </dt>
+                        <dd class="col-sm-10">
+                            @string.Join(", ", functions.Select(x => x.ActivityTypeName))
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-3">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-info float-start">Editar</a>
+                </div>
+                <div class="col-md-3">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <text>
+                            <a asp-action="Index" class="btn btn-secondary float-end">Voltar à Lista</a>
+                        </text>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

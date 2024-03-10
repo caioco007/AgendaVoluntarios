@@ -1,47 +1,87 @@
 ﻿@model AgendaVoluntarios.DTO.InputModels.NewProfileInputModel
+@inject AgendaVoluntarios.Services.Interfaces.IFunctionService _functionService
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Criar</h1>
 
-<h4>Profile</h4>
+<h4>Perfil</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label">Nome Completo</label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="BirthDate" class="control-label">Data de Aniversário</label>
+                        <input asp-for="BirthDate" type="date" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label">Celular</label>
+                        <input asp-for="PhoneNumber" class="form-control celphones" minlength="10" maxlength="11"/>
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @{
+                            var functions = new List<AgendaVoluntarios.DTO.ViewModels.FunctionViewModel>();
+                        }
+                        <label asp-for="Functions" class="control-label">Funções</label>
+                        <select asp-for="Functions" class="form-select" id="select-multiple" multiple="multiple">
+                            @foreach (var item in await _functionService.GetAllAsync())
+                            {
+                                <text>
+                                    <option value="@item.Id">@item.ActivityTypeName</option>
+                                </text>
+                            }
+                        </select>
+                        <span asp-validation-for="Functions" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" type="date" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label">Celular</label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <input type="submit" value="Criar" class="btn btn-primary float-start" />
+                </div>
+                <div class="col-md-6">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Index" class="btn btn-secondary float-end">Voltar à Lista</a>
+                    }
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#select-multiple').select2({
+                placeholder: '',
+                allowClear: true,
+                escapeMarkup: function (markup) { return markup; },
+                closeOnSelect: true,
+            });
+            _MaskData();
+        });
+    </script>
 }

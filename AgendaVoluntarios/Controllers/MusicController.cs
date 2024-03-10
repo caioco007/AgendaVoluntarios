@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AgendaVoluntarios.Areas.Identity.Data;
+using AgendaVoluntarios.Data.Entities;
 using AgendaVoluntarios.DTO.InputModels;
 using AgendaVoluntarios.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -16,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace PB_RedeSocial.Controllers
+namespace AgendaVoluntarios.Controllers
 {
     [Authorize]
     public class MusicController : Controller
@@ -91,6 +92,34 @@ namespace PB_RedeSocial.Controllers
                 return NotFound();
             }
             return View(new EditMusicInputModel {Id = musics.Id, Name = musics.Name, Key = musics.Key});
+        }
+
+
+
+        // POST: Music/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(Guid id, EditMusicInputModel music)
+        {
+            if (id != music.Id)
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _musicService.UpdateAsync(music);
+
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    throw;
+                }
+                return RedirectToAction(nameof(Index));
+            }
+
+            return View(music);
         }
 
 

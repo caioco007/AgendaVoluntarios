@@ -1,28 +1,40 @@
-﻿@model IEnumerable<AgendaVoluntarios.DTO.ViewModels.EventViewModel>
+﻿@model IEnumerable<AgendaVoluntarios.DTO.ViewModels.EventListViewModel>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Lista</h1>
 
-@if (Model.Count() >= 1)
+@if (User.IsInRole("Admin"))
 {
-    <text>
-    </text>
+    <p>
+        <a asp-action="Create">Criar evento</a>
+    </p>
 }
-else
-{
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-}
-     
+
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.EventAt)
+            </th>
+            <th>
+                Músicas
+            </th>
+            <th>
+                @if (User.IsInRole("Admin"))
+                {
+                    <text>
+                        Confirmados
+                    </text>
+                }
+                else
+                {
+                    <text>
+                        Função
+                    </text>
+                }
             </th>
             <th></th>
         </tr>
@@ -30,14 +42,42 @@ else
     <tbody>
         @foreach (var item in Model)
         {
+            var profileEvent = item.ProfileEvents.FirstOrDefault();
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.EventAt)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                    @Html.DisplayFor(modelItem => item.MusicsName)
+                </td>
+                @if (User.IsInRole("Admin"))
+                {
+                    <td>
+                        @item.ProfileEvents.Count(x => x.IsConfirmedUser.HasValue && x.IsConfirmedUser.Value)
+                    </td>
+                }
+                else
+                {
+                    <td>
+                        @*@Html.DisplayFor(modelItem => item.ProfileEvents)*@
+                        @profileEvent.ActivityTypeName
+                    </td>
+                }
+
+                <td>
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <text>
+                            <a asp-action="Edit" asp-route-id="@item.Id">Editar</a> |
+                            @*<a asp-action="Details" asp-route-id="@item.Id">Details</a> |*@
+                            <a asp-action="Delete" asp-route-id="@item.Id">Excluir</a>
+                        </text>
+                    }
+                    else if (!profileEvent.IsConfirmedUser.HasValue)
+                    {
+                        <a href="@Url.Action("ConfirmedUser", "Event", new{profileId = profileEvent.ProfileId, activityId = profileEvent.ActivityId, eventId = profileEvent.EventId, isConfirmed = true})" class="btn">Confirmar</a>
+                        <a href="@Url.Action("ConfirmedUser", "Event", new{profileId = profileEvent.ProfileId, activityId = profileEvent.ActivityId, eventId = profileEvent.EventId, isConfirmed = false})" class="btn">Regeitar</a>
+                    }
                 </td>
             </tr>
         }

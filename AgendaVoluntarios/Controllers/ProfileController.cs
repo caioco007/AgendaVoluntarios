@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Threading.Tasks;
 using AgendaVoluntarios.Areas.Identity.Data;
 using AgendaVoluntarios.DTO.InputModels;
+using AgendaVoluntarios.DTO.ViewModels;
 using AgendaVoluntarios.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -16,7 +17,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace PB_RedeSocial.Controllers
+namespace AgendaVoluntarios.Controllers
 {
     [Authorize]
     public class ProfileController : Controller
@@ -38,11 +39,24 @@ namespace PB_RedeSocial.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = _userManager.GetUserId(User);
-            var profile = await _profileService.GetByUserIdAsync(userId);
+            List<ProfileViewModel> profiles = new List<ProfileViewModel>();
+            if(User.IsInRole("Admin"))
+                profiles = await _profileService.GetAllAsync();
+            else
+            {
+;               var profile =  await _profileService.GetByUserIdAsync(userId);
+                if(profile != null)
+                    profiles.Add(profile);
 
-            return View(profile);
+                if(profiles.Count == 0)
+                    return View(nameof(AgendaVoluntarios.Controllers.ProfileController.Create));
+                else
+                    return View(nameof(AgendaVoluntarios.Controllers.ProfileController.Details), profile);
+            }
+
+            return View(profiles);
         }
-         
+
         // GET: Profile/Details/5
         public async Task<IActionResult> Details(Guid? id)
         {

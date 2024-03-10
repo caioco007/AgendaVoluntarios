@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 
-namespace PB_RedeSocial.Controllers
+namespace AgendaVoluntarios.Controllers
 {
     [Authorize(Roles = "Admin")]
     public class FunctionController : Controller

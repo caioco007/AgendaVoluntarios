@@ -41,7 +41,10 @@ builder.Services.AddDefaultIdentity<User>(options =>
 
 #region Repository
 builder.Services.AddScoped<IProfileRepository, ProfileRepository>();
+builder.Services.AddScoped<IProfileFunctionRepository, ProfileFunctionRepository>();
+builder.Services.AddScoped<IProfileEventRepository, ProfileEventRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
+builder.Services.AddScoped<IEventMusicRepository, EventMusicRepository>();
 builder.Services.AddScoped<IFunctionRepository, FunctionRepository>(); 
 builder.Services.AddScoped<IMusicRepository, MusicRepository>();
 #endregion

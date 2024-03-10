@@ -1,50 +1,103 @@
 ﻿@model AgendaVoluntarios.DTO.InputModels.EditProfileInputModel
+@inject AgendaVoluntarios.Services.Interfaces.IFunctionService _functionService
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Editar</h1>
 
-<h4>Profile</h4>
+<h4>Perfil</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
-
-            <div class="form-group">
-                <label asp-for="FullName" class="control-label"></label>
-                <input asp-for="FullName" class="form-control" />
-                <span asp-validation-for="FullName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="BirthDate" class="control-label"></label>
-                <input asp-for="BirthDate" type="date" class="form-control" />
-                <span asp-validation-for="BirthDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label">Nº Celular</label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-
             <input type="hidden" asp-for="UserId" />
 
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="FullName" class="control-label">Nome completo</label>
+                        <input asp-for="FullName" class="form-control" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="BirthDate" class="control-label">Data de nascimento</label>
+                        <input asp-for="BirthDate" type="date" class="form-control" />
+                        <span asp-validation-for="BirthDate" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="PhoneNumber" class="control-label">Celular ou Telefone</label>
+                        <input asp-for="PhoneNumber" class="form-control celphones" />
+                        <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        @{
+                            var functions = new List<AgendaVoluntarios.DTO.ViewModels.FunctionViewModel>();
+                            if (Model.UserId != null)
+                            {
+                                functions = await _functionService.GetFunctionByProfileIdAsync(Model.Id);
+                            }
+                        }
+                        <label asp-for="Functions" class="control-label">Funções</label>
+                        <select asp-for="Functions" class="form-select" id="select-multiple" multiple="multiple">
+                            @foreach (var item in await _functionService.GetAllAsync())
+                            {
+                                <text>
+                                    @if (functions.Any(x => x.Id == item.Id))
+                                    {
+                                    <option value="@item.Id" selected>@item.ActivityTypeName</option>
+                                    }
+                                    else
+                                    {
+                                    <option value="@item.Id">@item.ActivityTypeName</option>
+
+                                    }
+                                </text>
+                            }
+                        </select>
+                        <span asp-validation-for="Functions" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <input type="submit" value="Salvar" class="btn btn-primary float-start" />
+                </div>
+                <div class="col-md-6">
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <a asp-action="Index" class="btn btn-secondary float-end">Voltar à Lista</a>
+                    }else{
+                        <a asp-action="Index" class="btn btn-secondary float-end">Voltar</a>
+                    }
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#select-multiple').select2({
+                placeholder: '',
+                allowClear: true,
+                escapeMarkup: function (markup) { return markup; },
+                closeOnSelect: true,
+            });
+            _MaskData();
+        });
+    </script>
 }

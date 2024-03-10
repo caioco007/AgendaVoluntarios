@@ -1,12 +1,28 @@
-﻿<!DOCTYPE html>
+﻿@using AgendaVoluntarios.Areas.Identity.Data;
+@using AgendaVoluntarios.Services.Interfaces;
+@using Microsoft.AspNetCore.Identity;
+@inject SignInManager<User> SignInManager;
+@inject UserManager<User> UserManager;
+@inject IProfileService _profileService;
+@{
+    var user = await UserManager.GetUserAsync(User);
+    AgendaVoluntarios.DTO.ViewModels.ProfileViewModel profile = null;
+    if(user != null)
+        profile = await _profileService.GetByUserIdAsync(user.Id);
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - AgendaVoluntarios</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/AgendaVoluntarios.styles.css" asp-append-version="true" />
+    <link type="text/css" rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link type="text/css" rel="stylesheet" href="~/AgendaVoluntarios.styles.css" asp-append-version="true" />
+    <!-- select-2 -->
+    <link type="text/css" href="~/lib/select2/select2.min.css" rel="stylesheet" />
+    <!-- select-2 -->
+    <link type="text/css" href="~/lib/jqueryUI/jquery-ui.css" rel="stylesheet" />
 </head>
 <body>
     <header>
@@ -19,24 +35,30 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Profile</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Index">Event</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Function" asp-action="Index">Function</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Music" asp-action="Index">Music</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User) && profile != null)
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Profile" asp-action="Index">Perfil</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Event" asp-action="Index">Eventos</a>
+                            </li>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Function" asp-action="Index">Funções</a>
+                                </li>
+                            }
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Music" asp-action="Index">Músicas</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>
@@ -54,9 +76,14 @@
             &copy; 2024 - AgendaVoluntarios - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
     </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    @await RenderSectionAsync("Scripts", required: false)
 </body>
+<script type="text/javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="~/lib/jqueryMask/jquery.mask.min.js"></script>
+<script type="text/javascript" src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script type="text/javascript" src="~/js/site.js" asp-append-version="true"></script>
+<script type="text/javascript" src="~/lib/select2/select2.min.js"></script>
+<!--Jquery UI-->
+<script type="text/javascript" src="~/lib/jqueryUI/jquery-ui.js"></script>
+<!--Jquery UI-->
+@await RenderSectionAsync("Scripts", required: false)
 </html>

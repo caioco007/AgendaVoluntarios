@@ -4,37 +4,59 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Criar</h1>
 
-<h4>Event</h4>
+<h4>Função</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label asp-for="TypeId" class="control-label"></label>
-                <select asp-for="TypeId" class="form-select" aria-label="Default select example">
-                    <option selected>Open this select menu</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
-                </select>
-                <span asp-validation-for="TypeId" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="TypeId" class="control-label">Ministérios</label>
+                        <select asp-for="TypeId" class="form-select" aria-label="Default select example">
+                            <option selected>Selecione</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.FunctionTypes.Worship)">Louvor</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.FunctionTypes.Media)">Midia</option>
+                        </select>
+                        <span asp-validation-for="TypeId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="ActivityId" class="control-label">Atividades</label>
+                        <select asp-for="ActivityId" class="form-select" aria-label="Default select example">
+                            <option selected>Selecione</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Vocals)">Vocalista</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Drums)">Baterista</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.AcousticGuitar)">Violonista</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.BassGuitar)">Baixista</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.ElectricGuitar)">Guitarrista</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Keyboard)">Tecladista</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Photography)">Fotografia</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.SocialMedia)">Media Social</option>
+                            <option value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Projector)">Projetista</option>
+                        </select>
+                        <span asp-validation-for="ActivityId" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <input type="submit" value="Criar" class="btn btn-primary float-start" />
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="Index" class="btn btn-secondary float-end">Voltar à Lista</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

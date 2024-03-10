@@ -1,35 +1,188 @@
 ﻿@model AgendaVoluntarios.DTO.InputModels.NewEventInputModel
+@inject AgendaVoluntarios.Services.Interfaces.IMusicService _musicService
+@inject AgendaVoluntarios.Services.Interfaces.IProfileService _profileService
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<h1>Criar</h1>
 
-<h4>Event</h4>
+<h4>Evento</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label asp-for="EventAt" class="control-label"></label>
-                <input asp-for="EventAt" type="date" class="form-control" />
-                <span asp-validation-for="EventAt" class="text-danger"></span>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="EventAt" class="control-label">Data do Evento</label>
+                        <input asp-for="EventAt" type="datetime-local" class="form-control" />
+                        <span asp-validation-for="EventAt" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="Musics" class="control-label">Músicas</label>
+                        <select asp-for="Musics" class="form-select" id="select-multiple" multiple="multiple">
+                            @foreach (var item in await _musicService.GetAllAsync())
+                            {
+                                <option value="@item.Id">@item.Name</option>
+                            }
+                        </select>
+                        <span asp-validation-for="Musics" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label asp-for="ProfileVocalsEvents" class="control-label">Vocais</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Vocals)" asp-for="ProfileVocalsEvents[0].ActivityId" />
+                        <select class="form-select" asp-for="ProfileVocalsEvents[0].ProfileIds" id="select1-multiple" multiple="multiple">
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Vocals))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProfileVocalsEvents[0].ProfileIds" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Bateristas</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Drums)" asp-for="ProfileEvents[0].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[0].ProfileId">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Drums))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Violão</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.AcousticGuitar)" asp-for="ProfileEvents[1].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[1].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.AcousticGuitar))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Contra Baixo</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.BassGuitar)" asp-for="ProfileEvents[2].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[2].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.BassGuitar))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Guitarra</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.ElectricGuitar)" asp-for="ProfileEvents[3].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[3].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.ElectricGuitar))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Teclado</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Keyboard)" asp-for="ProfileEvents[4].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[4].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Keyboard))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Fotografia</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Photography)" asp-for="ProfileEvents[5].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[5].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Photography))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Media Social</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.SocialMedia)" asp-for="ProfileEvents[6].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[6].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.SocialMedia))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label class="control-label">Projeção</label>
+                        <input hidden value="@((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Projector)" asp-for="ProfileEvents[7].ActivityId" />
+                        <select class="form-select" asp-for="ProfileEvents[7].ProfileId" aria-label="Default select example">
+                            <option value="" selected>Selecione</option>
+                            @foreach (var item in await _profileService.GetProfileByActivityIdAsync((int)AgendaVoluntarios.DTO.Enums.ActivityTypes.Projector))
+                            {
+                                <option value="@item.Id">@item.FullName</option>
+                            }
+                        </select>
+                        <span asp-validation-for="ProfileEvents[7].ProfileId" class="text-danger"></span>
+                    </div>
+                </div>
             </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <input type="submit" value="Criar" class="btn btn-primary float-start" />
+                </div>
+                <div class="col-md-6">
+                    <a asp-action="Index" class="btn btn-secondary float-end">Voltar à Lista</a>
+                </div>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('#select-multiple').select2({
+                placeholder: '',
+                allowClear: true,
+                escapeMarkup: function (markup) { return markup; },
+                closeOnSelect: true,
+            });
+            $('#select1-multiple').select2({
+                placeholder: '',
+                allowClear: true,
+                escapeMarkup: function (markup) { return markup; },
+                closeOnSelect: true,
+            });
+        });
+    </script>
 }
