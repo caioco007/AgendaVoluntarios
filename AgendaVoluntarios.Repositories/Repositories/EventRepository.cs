@@ -1,4 +1,5 @@
 ﻿using AgendaVoluntarios.Data.Entities;
+using AgendaVoluntarios.Data.Entities.List;
 using AgendaVoluntarios.Data.Persistence;
 using AgendaVoluntarios.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -21,7 +22,29 @@ namespace AgendaVoluntarios.Repositories.Repositories
 
         public async Task<List<Event>> GetAllAsync() => await _dbContext.Event.ToListAsync();
         public async Task<Event> GetByIdAsync(Guid id) => await _dbContext.Event.SingleOrDefaultAsync(e => e.Id == id);
-        public async Task<Event> GetFirstByIdAsync(Guid id) => await _dbContext.Event.FirstOrDefaultAsync(p => p.Id == id);
+        public async Task<Event> GetFirstByIdAsync(Guid id) => await _dbContext.Event.FirstOrDefaultAsync(e => e.Id == id);
+        public async Task<List<Event>> GetEventsByProfileIdAsync(Guid profileId)
+        {
+            var q = await (from e in _dbContext.Event
+                           join pfe in _dbContext.ProfileEvent on e.Id equals pfe.EventId
+                           where pfe.ProfileId == profileId
+                           select e).ToListAsync();
+            return q;
+        }
+        public async Task<List<EventList>> GetListAllAsync()
+        {
+            var q = await (from e in _dbContext.Event
+                           join pfe in _dbContext.ProfileEvent on e.Id equals pfe.EventId
+                           join em in _dbContext.EventMusic on e.Id equals em.EventId
+                           join m in _dbContext.Music on em.MusicId equals m.Id
+                           select new EventList 
+                           {
+                               Id = e.Id, 
+                               EventAt = e.EventAt,
+                           }
+                           ).ToListAsync();
+            return q;
+        }
         public async Task AddAsync(Event events)
         {
             await _dbContext.Event.AddAsync(events);

@@ -13,6 +13,8 @@ namespace AgendaVoluntarios.Repositories.Interfaces
         Task<Music> GetByIdAsync(Guid id);
         Task<Music> GetFirstByIdAsync(Guid id);
         Task AddAsync(Music music);
+        Task UpdateAsync(Music music);
         Task DeleteAsync(Guid id);
+        Task<List<Music>> GetMusicByEventIdAsync(Guid eventId);
     }
 }

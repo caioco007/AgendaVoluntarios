@@ -2,8 +2,10 @@
 using AgendaVoluntarios.Data.Persistence;
 using AgendaVoluntarios.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,6 +31,16 @@ namespace AgendaVoluntarios.Repositories.Repositories
         {
             await _dbContext.Function.AddAsync(function);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Function>> GetFunctionByProfileIdAsync(Guid profileId)
+        {
+            var q = (from f in _dbContext.Function
+                     join pf in _dbContext.ProfileFunction on f.Id equals pf.FunctionId 
+                     where pf.ProfileId == profileId
+                     select f);
+
+            return await q.ToListAsync();
         }
 
         public async Task<bool> FunctionExistsAsync(Guid id)

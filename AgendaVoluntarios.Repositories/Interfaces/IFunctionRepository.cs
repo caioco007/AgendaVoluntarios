@@ -13,6 +13,7 @@ namespace AgendaVoluntarios.Repositories.Interfaces
         Task<Function> GeFirstByIdAsync(Guid id);
         Task<List<Function>> GetAllAsync();
         Task AddAsync(Function profile);
+        Task<List<Function>> GetFunctionByProfileIdAsync(Guid profileId);
         Task<bool> FunctionExistsAsync(Guid id);
         Task DeleteAsync(Guid id);
     }

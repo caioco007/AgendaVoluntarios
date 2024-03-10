@@ -11,7 +11,10 @@ namespace AgendaVoluntarios.Repositories.Interfaces
     {
         Task<Profile> GetByIdAsync(Guid id);
         Task<Profile> GeFirstByIdAsync(Guid id);
-        Task<List<Profile>> GetByUserIdAsync(string userId);
+        Task<List<Profile>> GetAllAsync();
+        Task<Profile> GetByUserIdAsync(string userId);
+        Task<List<Profile>> GetProfileByActivityIdAsync(int activityId);
+        Task<List<Profile>> GetProfilesByActivityIdAndEventIdAsync(int activityId, Guid eventId);
         Task AddAsync(Profile profile);
         Task UpdateAsync(Profile profile);
         Task<bool> ProfileExistsAsync(Guid id);

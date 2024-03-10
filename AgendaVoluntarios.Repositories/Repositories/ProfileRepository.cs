@@ -29,7 +29,35 @@ namespace AgendaVoluntarios.Repositories.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Profile>> GetByUserIdAsync(string userId) => await _dbContext.Profile.Where(p => p.UserId == userId).ToListAsync();
+        public async Task AddProfileFunctionAsync(ProfileFunction profileFunction)
+        {
+            await _dbContext.ProfileFunction.AddAsync(profileFunction);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Profile>> GetAllAsync() => await _dbContext.Profile.ToListAsync();
+
+
+        public async Task<Profile> GetByUserIdAsync(string userId) => await _dbContext.Profile.SingleOrDefaultAsync(p => p.UserId == userId);
+
+        public async Task<List<Profile>> GetProfileByActivityIdAsync(int activityId)
+        {
+            var q = await (from pf in _dbContext.Profile
+                           join pff in _dbContext.ProfileFunction on pf.Id equals pff.ProfileId
+                           join f in _dbContext.Function on pff.FunctionId equals f.Id
+                           where f.ActivityId == activityId
+                           select pf).ToListAsync();
+            return q;
+        }
+
+        public async Task<List<Profile>> GetProfilesByActivityIdAndEventIdAsync(int activityId, Guid eventId)
+        {
+            var q = await (from pf in _dbContext.Profile
+                           join pfe in _dbContext.ProfileEvent on pf.Id equals pfe.ProfileId
+                           where pfe.ActivityId == activityId && pfe.EventId == eventId
+                           select pf).ToListAsync();
+            return q;
+        }
 
         public async Task UpdateAsync(Profile profile)
         {

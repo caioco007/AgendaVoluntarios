@@ -25,6 +25,11 @@ namespace AgendaVoluntarios.Repositories.Repositories
             await _dbContext.Music.AddAsync(music);
             await _dbContext.SaveChangesAsync();
         }
+        public async Task UpdateAsync(Music music)
+        {
+            _dbContext.Music.Update(music);
+            await _dbContext.SaveChangesAsync();
+        }
 
         public async Task<Music> GetFirstByIdAsync(Guid id) => await _dbContext.Music.FirstOrDefaultAsync(p => p.Id == id);
 
@@ -33,6 +38,15 @@ namespace AgendaVoluntarios.Repositories.Repositories
             var music = await _dbContext.Music.FindAsync(id);
             _dbContext.Music.Remove(music);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<Music>> GetMusicByEventIdAsync(Guid eventId)
+        {
+            var q = await (from m in _dbContext.Music
+                           join em in _dbContext.EventMusic on m.Id equals em.MusicId
+                           where em.EventId == eventId
+                           select m).ToListAsync();
+            return q;
         }
     }
 }

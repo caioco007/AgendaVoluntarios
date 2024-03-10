@@ -1,4 +1,5 @@
 ﻿using AgendaVoluntarios.Data.Entities;
+using AgendaVoluntarios.Data.Entities.List;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ namespace AgendaVoluntarios.Repositories.Interfaces
         Task<List<Event>> GetAllAsync();
         Task<Event> GetByIdAsync(Guid id);
         Task<Event> GetFirstByIdAsync(Guid id);
+        Task<List<Event>> GetEventsByProfileIdAsync(Guid profileId);
+        Task<List<EventList>> GetListAllAsync();
         Task AddAsync(Event events);
         Task<bool> EventExistsAsync(Guid id);
         Task DeleteAsync(Guid id);
