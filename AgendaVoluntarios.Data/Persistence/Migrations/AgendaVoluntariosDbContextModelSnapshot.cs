@@ -134,10 +134,13 @@ namespace AgendaVoluntarios.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsConfirmedUser")
+                    b.Property<bool?>("IsConfirmedUser")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("ProfileId")

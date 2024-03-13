@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendaVoluntarios.Data.Persistence.Migrations
 {
     [DbContext(typeof(AgendaVoluntariosDbContext))]
-    [Migration("20240225211442_AddInitialMigration")]
-    partial class AddInitialMigration
+    [Migration("20240308010245_AddInitMigration")]
+    partial class AddInitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -136,10 +136,13 @@ namespace AgendaVoluntarios.Data.Persistence.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<int>("ActivityId")
+                        .HasColumnType("int");
+
                     b.Property<Guid>("EventId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsConfirmedUser")
+                    b.Property<bool?>("IsConfirmedUser")
                         .HasColumnType("bit");
 
                     b.Property<Guid>("ProfileId")

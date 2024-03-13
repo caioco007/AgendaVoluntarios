@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaVoluntarios", "AgendaVoluntarios\AgendaVoluntarios.csproj", "{F4D79186-50DD-481C-99B1-69FF92B336E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaVoluntarios", "AgendaVoluntarios\AgendaVoluntarios.csproj", "{F4D79186-50DD-481C-99B1-69FF92B336E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaVoluntarios.Data", "AgendaVoluntarios.Data\AgendaVoluntarios.Data.csproj", "{9C6229FE-C330-4FCC-B2C5-1D7DC63B521C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaVoluntarios.Data", "AgendaVoluntarios.Data\AgendaVoluntarios.Data.csproj", "{9C6229FE-C330-4FCC-B2C5-1D7DC63B521C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaVoluntarios.DTO", "AgendaVoluntarios.DTO\AgendaVoluntarios.DTO.csproj", "{4B2B40EC-92F1-4E41-A842-E644DAC293AF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaVoluntarios.DTO", "AgendaVoluntarios.DTO\AgendaVoluntarios.DTO.csproj", "{4B2B40EC-92F1-4E41-A842-E644DAC293AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaVoluntarios.Repositories", "AgendaVoluntarios.Repositories\AgendaVoluntarios.Repositories.csproj", "{061AEC9A-9179-4D55-ADC8-28DB70CC4C0C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaVoluntarios.Repositories", "AgendaVoluntarios.Repositories\AgendaVoluntarios.Repositories.csproj", "{061AEC9A-9179-4D55-ADC8-28DB70CC4C0C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaVoluntarios.Services", "AgendaVoluntarios.Services\AgendaVoluntarios.Services.csproj", "{F36FA005-F111-4894-8E9D-619179BBD441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AgendaVoluntarios.Services", "AgendaVoluntarios.Services\AgendaVoluntarios.Services.csproj", "{F36FA005-F111-4894-8E9D-619179BBD441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AgendaVoluntarios.UnitTestes", "AgendaVoluntarios.UnitTestes\AgendaVoluntarios.UnitTestes.csproj", "{2F17E713-1EFA-47AB-A749-F02B5B9B8AFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{F36FA005-F111-4894-8E9D-619179BBD441}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F36FA005-F111-4894-8E9D-619179BBD441}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F36FA005-F111-4894-8E9D-619179BBD441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F17E713-1EFA-47AB-A749-F02B5B9B8AFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F17E713-1EFA-47AB-A749-F02B5B9B8AFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F17E713-1EFA-47AB-A749-F02B5B9B8AFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F17E713-1EFA-47AB-A749-F02B5B9B8AFB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

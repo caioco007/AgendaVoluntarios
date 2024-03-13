@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgendaVoluntarios.Data.Persistence.Migrations
 {
-    public partial class AddInitialMigration : Migration
+    public partial class AddInitMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -97,7 +97,8 @@ namespace AgendaVoluntarios.Data.Persistence.Migrations
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ProfileId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     EventId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    IsConfirmedUser = table.Column<bool>(type: "bit", nullable: false)
+                    ActivityId = table.Column<int>(type: "int", nullable: false),
+                    IsConfirmedUser = table.Column<bool>(type: "bit", nullable: true)
                 },
                 constraints: table =>
                 {
