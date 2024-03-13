@@ -6,6 +6,9 @@
 
 <h1>Lista</h1>
 
+<h4>Evento</h4>
+<hr />
+
 @if (User.IsInRole("Admin"))
 {
     <p>
@@ -75,8 +78,8 @@
                     }
                     else if (!profileEvent.IsConfirmedUser.HasValue)
                     {
-                        <a href="@Url.Action("ConfirmedUser", "Event", new{profileId = profileEvent.ProfileId, activityId = profileEvent.ActivityId, eventId = profileEvent.EventId, isConfirmed = true})" class="btn">Confirmar</a>
-                        <a href="@Url.Action("ConfirmedUser", "Event", new{profileId = profileEvent.ProfileId, activityId = profileEvent.ActivityId, eventId = profileEvent.EventId, isConfirmed = false})" class="btn">Regeitar</a>
+                        <a href="@Url.Action("ConfirmedUser", "Event", new{profileId = profileEvent.ProfileId, activityId = profileEvent.ActivityId, eventId = profileEvent.EventId, isConfirmed = true})" class="btn btn-success">Confirmar</a>
+                        <a href="@Url.Action("ConfirmedUser", "Event", new{profileId = profileEvent.ProfileId, activityId = profileEvent.ActivityId, eventId = profileEvent.EventId, isConfirmed = false})" class="btn btn-danger">Regeitar</a>
                     }
                 </td>
             </tr>
