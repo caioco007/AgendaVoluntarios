@@ -5,6 +5,7 @@ using AgendaVoluntarios.Repositories.Interfaces;
 using AgendaVoluntarios.Repositories.Repositories;
 using AgendaVoluntarios.Services.Interfaces;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AgendaVoluntarios.Services.Services
 {
@@ -26,7 +27,7 @@ namespace AgendaVoluntarios.Services.Services
 
         public async Task DeleteAsync(Guid id)
         {
-            throw new NotImplementedException();
+            await _functionRepository.DeleteAsync(id);
         }
 
         public async Task<FunctionViewModel> GeFirstByIdAsync(Guid id)

@@ -67,5 +67,11 @@ namespace AgendaVoluntarios.Services.Services
         }
 
         public async Task DeleteAsync(Guid id) => await _musicRepository.DeleteAsync(id);
+
+        public async Task<bool> IsMusicLinkedToEvent(Guid musicId)
+        {
+            var linkedEvents = await _eventMusicRepository.GetEventsByMusicIdAsync(musicId);
+            return linkedEvents.Any();
+        }
     }
 }

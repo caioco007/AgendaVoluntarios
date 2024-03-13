@@ -7,6 +7,7 @@ using AgendaVoluntarios.Repositories.Repositories;
 using AgendaVoluntarios.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System.Transactions;
 
 namespace AgendaVoluntarios.Services.Services
 {
@@ -96,59 +97,67 @@ namespace AgendaVoluntarios.Services.Services
         }
         public async Task AddAsync(NewEventInputModel inputModel)
         {
-            Guid eventId = Guid.NewGuid();
-            var eventModel = new Event(eventId, inputModel.EventAt);
-
-            await _eventRepository.AddAsync(eventModel);
-
-            foreach (var item in inputModel.Musics)
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                var eventMusic = new EventMusic(Guid.NewGuid(), eventId,item);
-                await _eventMusicRepository.AddAsync(eventMusic);
-            }
+                Guid eventId = Guid.NewGuid();
+                var eventModel = new Event(eventId, inputModel.EventAt);
 
-            foreach (var item in inputModel.ProfileVocalsEvents[0].ProfileIds)
-            {
-                var profileEvent = new ProfileEvent(Guid.NewGuid(),item, eventId, inputModel.ProfileVocalsEvents[0].ActivityId);
-                await _profileEventRepository.AddProfileEventAsync(profileEvent);
-            }
+                await _eventRepository.AddAsync(eventModel);
 
-            foreach(var item in inputModel.ProfileEvents)
-            {
-                if (!item.ProfileId.HasValue) continue;
-                var profileEvent = new ProfileEvent(Guid.NewGuid(), item.ProfileId.Value, eventId, item.ActivityId);
-                await _profileEventRepository.AddProfileEventAsync(profileEvent);
+                foreach (var item in inputModel.Musics)
+                {
+                    var eventMusic = new EventMusic(Guid.NewGuid(), eventId, item);
+                    await _eventMusicRepository.AddAsync(eventMusic);
+                }
+
+                foreach (var item in inputModel.ProfileVocalsEvents[0].ProfileIds)
+                {
+                    var profileEvent = new ProfileEvent(Guid.NewGuid(), item, eventId, inputModel.ProfileVocalsEvents[0].ActivityId);
+                    await _profileEventRepository.AddProfileEventAsync(profileEvent);
+                }
+
+                foreach (var item in inputModel.ProfileEvents)
+                {
+                    if (!item.ProfileId.HasValue) continue;
+                    var profileEvent = new ProfileEvent(Guid.NewGuid(), item.ProfileId.Value, eventId, item.ActivityId);
+                    await _profileEventRepository.AddProfileEventAsync(profileEvent);
+                }
+                transactionScope.Complete();
             }
         }
 
         public async Task UpdateAsync(EditEventInputModel inputModel)
         {
-            var eventModel = new Event(inputModel.Id, inputModel.EventAt);
-
-            foreach (var item in await _profileEventRepository.GetByEventIdAsync(inputModel.Id))
+            using (var transactionScope = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
-                await _profileEventRepository.DeleteAsync(item.Id);
-            }
+                var eventModel = new Event(inputModel.Id, inputModel.EventAt);
 
-            foreach (var item in inputModel.ProfileVocalsEvents[0].ProfileIds)
-            {
-                var profileEvent = new ProfileEvent(Guid.NewGuid(), item, inputModel.Id, inputModel.ProfileVocalsEvents[0].ActivityId);
-                await _profileEventRepository.AddProfileEventAsync(profileEvent);
-            }
+                foreach (var item in await _profileEventRepository.GetByEventIdAsync(inputModel.Id))
+                {
+                    await _profileEventRepository.DeleteAsync(item.Id);
+                }
 
-            foreach (var item in inputModel.ProfileEvents)
-            {
-                if (!item.ProfileId.HasValue) continue;
-                var profileEvent = new ProfileEvent(Guid.NewGuid(), item.ProfileId.Value, inputModel.Id, item.ActivityId);
-                await _profileEventRepository.AddProfileEventAsync(profileEvent);
+                foreach (var item in inputModel.ProfileVocalsEvents[0].ProfileIds)
+                {
+                    var profileEvent = new ProfileEvent(Guid.NewGuid(), item, inputModel.Id, inputModel.ProfileVocalsEvents[0].ActivityId);
+                    await _profileEventRepository.AddProfileEventAsync(profileEvent);
+                }
+
+                foreach (var item in inputModel.ProfileEvents)
+                {
+                    if (!item.ProfileId.HasValue) continue;
+                    var profileEvent = new ProfileEvent(Guid.NewGuid(), item.ProfileId.Value, inputModel.Id, item.ActivityId);
+                    await _profileEventRepository.AddProfileEventAsync(profileEvent);
+                }
+                transactionScope.Complete();
             }
         }
 
         public async Task DeleteAsync(Guid id) => await _eventRepository.DeleteAsync(id);
 
-        public Task<bool> EventExistsAsync(Guid id)
+        public async Task<bool> EventExistsAsync(Guid id)
         {
-            throw new NotImplementedException();
+            return await _eventRepository.EventExistsAsync(id);
         }
         public async Task SetIsConfirmedUserInEvent(Guid profileId, int activityId, Guid eventId, bool isConfirmed) => await _profileEventRepository.ConfirmedUser(profileId, activityId, eventId, isConfirmed);
     }

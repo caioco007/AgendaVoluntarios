@@ -37,6 +37,11 @@ namespace AgendaVoluntarios.Repositories.Repositories
 
         public async Task<EventMusic> GetByIdAsync(Guid id) => await _dbContext.EventMusic.SingleOrDefaultAsync(e => e.Id == id);
 
+        public async Task<List<EventMusic>> GetEventsByMusicIdAsync(Guid musicId)
+        {
+            return await _dbContext.EventMusic.Where(em => em.MusicId == musicId).ToListAsync();
+        }
+
         public async Task<EventMusic> GetFirstByIdAsync(Guid id) => await _dbContext.EventMusic.FirstOrDefaultAsync(e => e.Id == id);
     }
 }

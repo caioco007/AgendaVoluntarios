@@ -13,5 +13,6 @@ namespace AgendaVoluntarios.Services.Interfaces
         Task UpdateAsync(EditMusicInputModel inputModel);
         Task DeleteAsync(Guid id);
         Task<List<MusicViewModel>> GetMusicByEventIdAsync(Guid eventId);
+        Task<bool> IsMusicLinkedToEvent(Guid musicId);
     }
 }

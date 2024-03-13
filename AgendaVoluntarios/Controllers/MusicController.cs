@@ -145,6 +145,10 @@ namespace AgendaVoluntarios.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(Guid id)
         {
+            if (await _musicService.IsMusicLinkedToEvent(id))
+            {
+                return NotFound();
+            }
             await _musicService.DeleteAsync(id);
             return RedirectToAction(nameof(Index));
         }
