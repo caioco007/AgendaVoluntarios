@@ -10,9 +10,17 @@
         <li class="nav-item">
             <a id="manage" class="nav-link text-dark">Hello @UserManager.GetUserName(User)!</a>
         </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <text>
+            <li>
+                <a asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Action("Index", "Profile", new { area = "" })">Criar Voluntário</a>
+            </li>
+            </text>
+        }
         <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Profile", new { area = "" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link text-dark">Sair</button>
             </form>
         </li>
     }
